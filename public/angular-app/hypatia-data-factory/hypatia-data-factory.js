@@ -10,7 +10,7 @@ function hypatiaDataFactory($http) {
 
     
     function keywordsListUpload(formdata) {
-        return $http.post('analyze/', formdata, { headers: { 'Content-Type': undefined } }).then(complete).catch(failed);
+        return $http.post('api/analyze/', formdata, { headers: { 'Content-Type': undefined } }).then(complete).catch(failed);
     }
 
     function articlesListDownload(id) {

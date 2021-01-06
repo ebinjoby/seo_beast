@@ -10,8 +10,12 @@ var S3 = require('../functions/S3.functions.js');
 module.exports.respond = async function (req, res) {
 
     try {
+        console.log("files", req.files);
+
         data = await readAllCSVs(req.files);
+
         console.log("yooo", data);
+
         res.json("files have been uploaded.")
     }
     catch (err) {
@@ -19,30 +23,27 @@ module.exports.respond = async function (req, res) {
         res.json(err);
     }
 
-    console.log(apple)
+    console.log("apple")
 }
 
 
-readAllCSVs = async function (files) {
-    return new Promise( function (resolve, reject) {
+readAllCSVs = function (files) {
+    return new Promise(async function (resolve, reject) {
 
-        var output = [];
+        var output = {};
 
         if(files[0]) {
 
             for (file of files) {
 
-                console.log(file);
-        
-                CSVtoJSON()
-                .fromFile(file.path)
-                .then(function(object) {
-                    output.push(object);
-                    //fs.unlinkSync(req.file.path);
-                })
-        
+                try {
+                    output = await readCSV(file, output);
+                }
+                catch(err) {
+                    console.log(err);
+                    reject(err);
+                }
             }
-            console.log("tree", output)
             resolve(output);
         }
         else {
@@ -50,3 +51,27 @@ readAllCSVs = async function (files) {
         } 
     });
 }
+
+
+readCSV = function (file, output) {
+    return new Promise(function (resolve, reject) {
+
+        if(file && output) {
+
+            CSVtoJSON()
+            .fromFile(file.path)
+            .then(function(object) {
+                output[file.originalname.split('.csv')[0]] = object;
+                resolve(output);
+                //fs.unlinkSync(req.file.path);
+            })  
+        }
+        else {
+            reject("There are no files")
+        } 
+    });
+}
+
+
+
+
