@@ -1,0 +1,456 @@
+  /* Sticky footer styles
+  -------------------------------------------------- */
+  html {
+    position: relative;
+    min-height: 100%;
+  }
+  body {
+    /* Margin bottom by footer height */
+    margin-bottom: 20px;
+  }
+  .container {
+    padding: 10px;
+  } 
+  .container1 {
+    padding: 80px 60px;
+  } 
+  .container2 {
+    padding: 10px 40px;
+  } 
+  .padded {
+    padding-top: 30px
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 90px;
+    background-color: #112531;
+    padding-top: 20px;
+  }
+  .photoContainer {
+    margin-top: 23vh; /* Half the height */
+  }
+
+  
+
+  .container123 {
+    display: grid;
+  }
+  
+  .rowone {
+    grid-row: 1;
+  }
+  
+  .rowtwo {
+    grid-row: 2;
+  }
+  
+  .rowthree {
+    grid-row: 3;
+  }
+  
+  .wrapper {
+    display: flex;
+    width: 100%;
+  }
+
+  .column1-2 {
+    float: left;
+    width: 50%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column2-2 {
+    float: right;
+    width: 50%;
+    padding: 0px;
+    text-align: center;
+    border:1px;
+  
+  }
+
+  .column1-2a {
+    float: left;
+    width: 50%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column2-2a {
+    float: right;
+    width: 50%;
+    padding: 0px;
+    text-align: right;
+    border:1px;
+  }
+
+  /* 1-2b and 2-2b can be found below */
+
+  .column1-2c {
+    float: left;
+    width: 220px;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column2-2c {
+    float: right;
+    width: calc(100% - 220px);
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column1-2d {
+    float: left;
+    width: 400px;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column2-2d {
+    float: right;
+    width: calc(100% - 400px);
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column1-2e {
+    float: left;
+    width: 170px;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column2-2e {
+    float: right;
+    width: calc(100% - 170px);
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column1-2f {
+    float: left;
+    width: 70%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  .column2-2f {
+    float: right;
+    width: 30%;
+    padding: 0px;
+    text-align: right;
+    border:1px;
+  }
+  
+  .column1-3 {
+    float: left;
+    width: 30%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+  
+  .column2-3 {
+    float: center;
+    width: 40%;
+    padding: 0px;
+    text-align: center;
+    border:1px;
+  }
+  
+  .column3-3  {
+    float: right;
+    width: 30%;
+    padding: 0px;
+    text-align: right;
+    border:1px;
+  }
+
+  .column1-3a {
+    float: left;
+    width: 40%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+  
+  .column2-3a {
+    float: center;
+    width: 45%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+  
+  .column3-3a  {
+    float: right;
+    width: 15%;
+    padding: 0px;
+    text-align: right;
+    border:1px;
+  }
+
+  .column1-3b {
+    float: left;
+    width: 40%;
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+  
+  .column2-3b {
+    float: center;
+    width: 45%;
+    padding-right: 20px;
+    text-align: right;
+    border:1px;
+  }
+  
+  .column3-3b  {
+    float: right;
+    width: 15%;
+    padding: 0px;
+    text-align: right;
+    border:1px;
+  }
+
+  .column1-3c {
+    float: left;
+    width: calc(50% - 30px);
+    padding: 0px;
+    text-align: right;
+    border:1px;
+  }
+  
+  .column2-3c {
+    float: center;
+    width: 60px;
+    padding-left: 10px;
+    padding-right: 10px;
+    text-align: center;
+    border:1px;
+  }
+  
+  .column3-3c  {
+    float: right;
+    width: calc(50% - 30px);
+    padding: 0px;
+    text-align: left;
+    border:1px;
+  }
+
+  
+  .column1-2b {
+    float: left;
+    width: 50%;
+    padding: 0px;
+    height: calc(75vh);
+    background: #36576b;
+    text-align: left;
+    border:2px solid #162530;
+  }
+  
+  
+  .column2-2b {
+    float: left;
+    width: 50%;
+    padding: 0px;
+    height: calc(75vh);
+    text-align: left;
+    border:2px solid #162530;
+  }
+
+  .tail {
+    padding: 15px;
+    text-align: left;
+    border:1px;
+  }
+
+  .save {
+    background-color: green;
+    border: none;
+  }
+
+  .brand {
+    background-color: #36576b;
+    border: 2px solid #162530;
+    padding-left:50px;
+    padding-right:50px;
+    padding-bottom:25px;
+  }
+  
+  .product {
+    background-color: #21485e;
+    border: 2px solid #162530;
+    padding-left:50px;
+    padding-right:50px;
+    padding-bottom:25px;
+  }
+
+  .kpi {
+    background-color: #6a7a84;
+    border: 2px solid #162530;
+    padding-left:50px;
+    padding-right:50px;
+    padding-bottom:25px;
+  }
+
+  .inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+
+  iframe { 
+    float: right;
+    width: 100%;
+    height: calc(80vh - 52px);
+    text-align: center;
+  }
+
+  .article {
+    background-color: #36576b;
+    padding-left:25px;
+    padding-right:25px;
+    padding-top:0px;
+    padding-bottom:25px;
+    height: calc(80vh - 52px);
+    overflow : auto;
+  }
+
+  .object {
+    background-color: #21485e;
+    border: 2px solid #162530;
+    padding-left:25px;
+    padding-right:25px;
+    padding-bottom:15px;
+  }
+
+  .support {
+    background-color: #6a7a84;
+    border: 2px solid #162530;
+    padding-left:25px;
+    padding-right:25px;
+    padding-bottom:25px;
+  }
+
+  .ok_pk {
+    background-color: #546976;
+    border: 2px solid #162530;
+    padding-left:25px;
+    padding-right:25px;
+    padding-bottom:15px;
+  }
+
+
+  .containTable {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid #6a7a84;
+  }
+  
+  table {
+    overflow-y: auto;
+    border-collapse: collapse;
+  }
+
+  tbody {
+    overflow-x: hidden;
+    display: block;
+  }
+
+  thead {
+    display: table-row;
+    border-bottom: 1px solid #6a7a84;
+  }
+
+  tr {
+    display: table; 
+    width: 100%;
+    border-bottom: 1px solid #515d6b;
+  }
+
+  th, td {
+    word-break: break-word; 
+    border-width: 1px;
+    padding: 7px;
+    padding-left: 20px;
+  }
+
+  
+.btn {
+  border: 1px solid #162530;
+}
+
+
+p_mtype {width:6em}
+p_mtype:hover span {display:none}
+p_mtype:hover:before {content:"Online | Print | TV | Radio"; color:lightskyblue}
+
+p_mtier {width:6em}
+p_mtier:hover span {display:none}
+p_mtier:hover:before {content:"Home Run | Tier 1 | Tier 2 | Tier 3"; color:lightskyblue}
+
+
+.loader {
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 2s linear infinite;
+  margin: 0px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.color-green1 {
+  color: lightgreen;
+}
+
+.color-green2 {
+  color: lightgreen;
+}
+
+.color-yellow {
+  color: yellow;
+}
+
+.color-orange {
+  color: orange;
+}
+
+.color-red {
+  color: red;
+}
+
+
+.check-color-red {
+  color: lightcoral;
+}
+
+.recode-color-red {
+  color: yellow;
+}
+
+
