@@ -1,5 +1,5 @@
 
-var ctrlArticles = require('../controllers/article.controllers.js');
+var ctrlTool = require('../controllers/tool.controllers.js');
 
 var express = require('express');
 var router = express.Router();
@@ -21,9 +21,8 @@ var upload = multer({ storage: storage });
 
 
 router
-.route('/projects/:project_id/articles/upload')
-.get(ctrlArticles.uploadTemplate)
-.post(upload.array('file', 30), ctrlArticles.upload)
+.route('/analyze')
+.post(upload.array('file', 30), ctrlTool.respond)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

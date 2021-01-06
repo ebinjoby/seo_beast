@@ -144,7 +144,7 @@ module.exports.upload = async function (req, res) {
 
 
 readAllCSVs = async function (files) {
-    return new Promise(async function (resolve, reject) {
+    return new Promise( function (resolve, reject) {
 
         var output = [];
 
@@ -157,7 +157,6 @@ readAllCSVs = async function (files) {
                 CSVtoJSON()
                 .fromFile(file.path)
                 .then(function(object) {
-                    console.log("gree", object)
                     output.push(object);
                     //fs.unlinkSync(req.file.path);
                 })

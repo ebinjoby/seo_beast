@@ -26,7 +26,7 @@ function SeoToolController(hypatiaDataFactory) {
     vm.uploadFiles = function () {
         if (confirm("Don't close this page while process is running.\nPress OK to continue.")) {
             vm.ShowSpinnerStatus = true;
-            hypatiaDataFactory.articlesListUpload("project", formdata).then(function (response) {
+            hypatiaDataFactory.keywordsListUpload(formdata).then(function (response) {
                 console.log(response);
                 alert(response.data);
                 vm.ShowSpinnerStatus = false;

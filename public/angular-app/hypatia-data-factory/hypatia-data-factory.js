@@ -4,13 +4,13 @@ function hypatiaDataFactory($http) {
 
     return {
 
-        articlesListUpload: articlesListUpload,
+        keywordsListUpload: keywordsListUpload,
         articlesListDownload: articlesListDownload
     };
 
     
-    function articlesListUpload(id, formdata) {
-        return $http.post('api/projects/' + id + '/articles/upload/', formdata, { headers: { 'Content-Type': undefined } }).then(complete).catch(failed);
+    function keywordsListUpload(formdata) {
+        return $http.post('analyze/', formdata, { headers: { 'Content-Type': undefined } }).then(complete).catch(failed);
     }
 
     function articlesListDownload(id) {
