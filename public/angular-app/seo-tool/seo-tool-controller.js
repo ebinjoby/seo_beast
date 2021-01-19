@@ -27,8 +27,8 @@ function SeoToolController(hypatiaDataFactory) {
         if (confirm("Don't close this page while process is running.\nPress OK to continue.")) {
             vm.ShowSpinnerStatus = true;
             hypatiaDataFactory.keywordsListUpload(formdata).then(function (response) {
-                console.log(response);
-                alert(response.data);
+                console.log(response.data);
+                alert(response.data.message);
                 vm.ShowSpinnerStatus = false;
             });
             formdata = new FormData();

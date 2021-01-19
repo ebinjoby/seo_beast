@@ -1,50 +1,114 @@
+
 var fs = require('fs');
 var path = require('path');
-var JSONtoCSV = require("json2csv").parse;
-var CSVtoJSON = require('csvtojson');
+const uuid = require('uuid');
 
-var S3 = require('../functions/S3.functions.js');
+var yolo = function () {
+    return new Promise(function (resolve, reject) {
 
+        var spawn = require("child_process").spawn; 
+        var process = spawn('python', ["./compute_input.py", 'Ram', 'Sastry'] ); 
+    
+        process.stdout.on('data', function(data) { 
+            console.log(data.toString()); 
+        } ) 
 
+    });
+}
 
 module.exports.respond = async function (req, res) {
 
     try {
+        await yolo();
+    }
+    catch(err) {
+        console.log(err);
+    }
+   
+    console.log("orange")
+}
+
+
+
+
+module.exports.respondOG = async function (req, res) {
+
+    try {
         console.log("files", req.files);
 
-        data = await readAllCSVs(req.files);
+        folderPath = await createFolder(req.files);
+        console.log("folderPath", folderPath);
 
-        console.log("yooo", data);
-
-        res.json("files have been uploaded.")
     }
     catch (err) {
         console.log(err);
         res.json(err);
     }
 
-    console.log("apple")
+    test();
+
+    
+    var pythonFilePath = __dirname.replace("/controllers", "/functions/SemRush_Excel.py")
+    console.log('pythonFilePath', pythonFilePath)
+
+    var spawn = require('child_process').spawn;
+    var process = spawn('python', ["./SemRush_Excel.py", folderPath] );
+
+    console.log('yoyoyo')
+
+    process.stdout.on('data', function(data){
+        console.log(data.toString());
+    });
+
+    process.stdout.on('end', function(){
+
+        try {
+            if (fs.existsSync(path.join(folderPath, 'Output.xlsx'))) {
+                res.json({ message: "Files have been processed.", location: folderPath.split("/").slice(-1) })
+            }
+        } 
+        catch(err) {
+            console.log(err);
+            res.json(err);
+        }
+    });
+   
+
+    console.log("orange")
+}
+
+test = function() {
+
+    var spawn = require("child_process").spawn;
+    var yolo = spawn('python', ["./compute_input.py", 'Ram', 'Sastry'] ); 
+
+    yolo.stdout.on('data', function(data) { 
+        console.log(data.toString()); 
+    } ) 
 }
 
 
-readAllCSVs = function (files) {
+createFolder = function (files) {
     return new Promise(async function (resolve, reject) {
 
-        var output = {};
+        uploadsPath = __dirname.replace("/api/controllers", "/uploads")
+        folderPath = path.join(uploadsPath, uuid.v1());
+
+        fs.mkdirSync(folderPath)
 
         if(files[0]) {
 
             for (file of files) {
 
                 try {
-                    output = await readCSV(file, output);
+                    output = await moveFile(file);
                 }
                 catch(err) {
                     console.log(err);
                     reject(err);
                 }
             }
-            resolve(output);
+            resolve(folderPath);
         }
         else {
             reject("There are no files")
@@ -53,18 +117,19 @@ readAllCSVs = function (files) {
 }
 
 
-readCSV = function (file, output) {
+moveFile = function (file) {
     return new Promise(function (resolve, reject) {
 
-        if(file && output) {
+        if(file) {
 
-            CSVtoJSON()
-            .fromFile(file.path)
-            .then(function(object) {
-                output[file.originalname.split('.csv')[0]] = object;
-                resolve(output);
-                //fs.unlinkSync(req.file.path);
-            })  
+            fs.copyFile(path.join(uploadsPath, file.filename), path.join(folderPath, file.originalname), function(err) {
+                if (err) {
+                    reject(err);
+                } 
+                else {
+                    resolve();
+                }
+            }); 
         }
         else {
             reject("There are no files")
@@ -72,6 +137,36 @@ readCSV = function (file, output) {
     });
 }
 
+
+analyze = function (folderPath) {
+    return new Promise(function (resolve, reject) {
+
+        var spawn = require('child_process').spawn;
+        var pythonFilePath = __dirname.replace("/controllers", "/functions/SemRush_Excel.py")
+        console.log('pythonFilePath', pythonFilePath)
+
+        var process = spawn('python', ["./SemRush_Excel.py", folderPath] );
+
+        console.log('yoyoyo')
+
+        process.stdout.on('data', function(data){
+            console.log(data.toString());
+        });
+
+        process.stdout.on('end', function(){
+
+            try {
+                if (fs.existsSync(path.join(folderPath, 'Output.xlsx'))) {
+                    resolve(folderPath.split("/").slice(-1));
+                }
+            } 
+            catch(err) {
+                reject(err);
+            }
+        });
+
+    });
+}
 
 
 
