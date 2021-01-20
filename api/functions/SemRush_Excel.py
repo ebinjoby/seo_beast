@@ -1,24 +1,26 @@
 
-import pandas as pd
-import langdetect as ld
-import numpy as np
+import os
 import sys
-from os import listdir
-from os.path import isfile, join
+
+print("pineapple")
+
+os.system('python3 -m pip install pandas')
+os.system('python3 -m pip install numpy')
+os.system('python3 -m pip install langdetect')
 
 
-def read_input():
-    
-    print('apple')
-    path = sys.argv
+def read_input(): 
+
+    print('berry')
+    path = sys.argv[1]
     print(str(path))
     return path
 
 
 def is_english(text):
-    
+
     try:
-        return ld.detect(text) == 'en'
+        return langdetect.detect(text) == 'en'
     except:
         return False
 
@@ -26,21 +28,21 @@ def is_english(text):
 
 def analyze(path, media_path):
 
-    files = [file for file in listdir(path) if isfile(join(path, file))]
+    files = [file for file in os.listdir(path) if os.path.isfile(os.path.join(path, file))]
 
     print('Input files are: ' + str(files))
 
 
-    df = pd.DataFrame()
+    df = pandas.DataFrame()
 
     for file in files:
 
         if file.split('.')[-1] == 'csv':
-            temp = pd.read_csv(join(path, file))
+            temp = pandas.read_csv(join(path, file))
             temp['Topic'] = file.replace('.csv', '')
 
         if file.split('.')[-1] == 'xlsx':
-            xl = pd.ExcelFile(join(path, file))
+            xl = pandas.ExcelFile(join(path, file))
             temp = xl.parse(xl.sheet_names[0])
             temp['Topic'] = file.replace('.xlsx', '')
 
@@ -57,7 +59,7 @@ def analyze(path, media_path):
     print('Sheet1 aggregated from input files with total number of rows = ' + str(len(sheet1.index)))
 
 
-    data = pd.DataFrame()
+    data = pandas.DataFrame()
 
     for index, row in df.iterrows():
         for idx, item in enumerate(row['Pages']):
@@ -90,10 +92,10 @@ def analyze(path, media_path):
     domain_count = data.groupby('Source').count()['Position']
     mean_position = data.groupby('Source').mean()['Position'].apply(lambda num: round(num, 2))
 
-    pivot = pd.concat([domain_count, mean_position], axis=1).reset_index()
+    pivot = pandas.concat([domain_count, mean_position], axis=1).reset_index()
     pivot.columns = ['Source', 'Total SERP URLs', 'Avg Position']
 
-    media_list = pd.read_csv(media_path)
+    media_list = pandas.read_csv(media_path)
     media_list.columns = ['Source', 'Domain Category']
 
     pivot = pivot.merge(media_list, how ='left')
@@ -117,7 +119,7 @@ def analyze(path, media_path):
     }
 
     for key in categories:
-        pivot.loc[pd.isnull(pivot['Domain Category']) & pivot['Source'].apply(lambda source: source.split('.')[-1] == key), 'Domain Category'] = categories[key]
+        pivot.loc[pandas.isnull(pivot['Domain Category']) & pivot['Source'].apply(lambda source: source.split('.')[-1] == key), 'Domain Category'] = categories[key]
 
     pivot.sort_values(by=['Total SERP URLs','Avg Position'], inplace=True, ascending=False)
 
@@ -125,17 +127,17 @@ def analyze(path, media_path):
     sheet3 = pivot
 
     print('Sheet3 created from pivoting Sheet2 with total number of rows = ' + str(len(sheet3.index)) 
-         + ', out of which ' + str(sum(pd.isnull(pivot['Domain Category']))) + '/' + str(len(pivot.index)) 
+         + ', out of which ' + str(sum(pandas.isnull(pivot['Domain Category']))) + '/' + str(len(pivot.index)) 
          + ' received domain categories')
 
 
     data = data.merge(pivot, how ='left')
-    data['Domain'] = np.nan
-    data['UVMs'] = np.nan
-    data['Visits'] = np.nan
-    data['Pages / Visit'] = np.nan
-    data['Avg Duration'] = np.nan
-    data['Bounce Rate'] = np.nan
+    data['Domain'] = numpy.nan
+    data['UVMs'] = numpy.nan
+    data['Visits'] = numpy.nan
+    data['Pages / Visit'] = numpy.nan
+    data['Avg Duration'] = numpy.nan
+    data['Bounce Rate'] = numpy.nan
 
     sheet4 = data[['Topic', 'Keyword', 'Volume', 'Difficulty', 'CPC', 'Comp Density', 'Results', 'Trend', 'Click Pot', 
                    'Position', 'Source', 'Domain Category', 'Total SERP URLs', 'Avg Position', 'Title', 'URL']]
@@ -147,7 +149,7 @@ def analyze(path, media_path):
     print('Sheet4 and Sheet5 have been created by merging Sheet2 and Sheet3')
 
 
-    writer = pd.ExcelWriter(path + '/Output.xlsx', engine='xlsxwriter')
+    writer = pandas.ExcelWriter(path + '/Output.xlsx', engine='xlsxwriter')
 
     sheet5.to_excel(writer, sheet_name='Sheet5', index=False)
     sheet4.to_excel(writer, sheet_name='Sheet4', index=False)
@@ -163,7 +165,7 @@ def analyze(path, media_path):
 
 if __name__ == '__main__':
     
-    print('mamama')
+    print('mango')
     path = read_input()
     media_path = '/Users/ejoby/Desktop/proto/seo_beast/api/databases/SERP Media Domain Categories.csv'
     analyze(path, media_path)

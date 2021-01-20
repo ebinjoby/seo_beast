@@ -4,7 +4,10 @@
   "description": "Hypatia Web Application",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nopenv": "nopenv",
+    "nopy": "nopy",
+    "npip": "npip"
   },
   "repository": {
     "type": "git",
@@ -39,6 +42,7 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
     "mysql": "^2.18.1",
+    "nopy": "^0.2.7",
     "pandas-js": "git+https://github.com/StratoDem/pandas.js.git",
     "path": "^0.12.7",
     "uuid": "^7.0.2"

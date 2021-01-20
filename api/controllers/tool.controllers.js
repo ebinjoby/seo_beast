@@ -3,23 +3,17 @@ var fs = require('fs');
 var path = require('path');
 const uuid = require('uuid');
 
-var yolo = function () {
-    return new Promise(function (resolve, reject) {
 
-        var spawn = require("child_process").spawn; 
-        var process = spawn('python', ["./compute_input.py", 'Ram', 'Sastry'] ); 
-    
-        process.stdout.on('data', function(data) { 
-            console.log(data.toString()); 
-        } ) 
 
-    });
-}
+module.exports.respondnew = async function (req, res) {
 
-module.exports.respond = async function (req, res) {
+    console.log("banana")
+
+    name = ['Kevin', 'Hart']
 
     try {
-        await yolo();
+        item = await yolo(name);
+        console.log(item)
     }
     catch(err) {
         console.log(err);
@@ -28,10 +22,29 @@ module.exports.respond = async function (req, res) {
     console.log("orange")
 }
 
+var yolo = function (name) {
+    return new Promise(function (resolve, reject) {
+
+        path123 = __dirname.replace("/controllers", "/controllers/compute_input.py")
+        console.log("path123", path123)
+
+        var spawn = require("child_process").spawn; 
+        var process = spawn('python', [path123, name[0], name[1]] ); 
+    
+        process.stdout.on('data', function(data) { 
+            console.log(data.toString()); 
+        })
+        
+        process.stdout.on('end', function(data){
+            resolve("success")
+        });
+
+    });
+}
 
 
 
-module.exports.respondOG = async function (req, res) {
+module.exports.respond = async function (req, res) {
 
     try {
         console.log("files", req.files);
@@ -45,46 +58,18 @@ module.exports.respondOG = async function (req, res) {
         res.json(err);
     }
 
-    test();
+    console.log("banana")
 
-    
-    var pythonFilePath = __dirname.replace("/controllers", "/functions/SemRush_Excel.py")
-    console.log('pythonFilePath', pythonFilePath)
-
-    var spawn = require('child_process').spawn;
-    var process = spawn('python', ["./SemRush_Excel.py", folderPath] );
-
-    console.log('yoyoyo')
-
-    process.stdout.on('data', function(data){
-        console.log(data.toString());
-    });
-
-    process.stdout.on('end', function(){
-
-        try {
-            if (fs.existsSync(path.join(folderPath, 'Output.xlsx'))) {
-                res.json({ message: "Files have been processed.", location: folderPath.split("/").slice(-1) })
-            }
-        } 
-        catch(err) {
-            console.log(err);
-            res.json(err);
-        }
-    });
+    try {
+        item = await yolo(folderPath);
+        console.log(item)
+    }
+    catch(err) {
+        console.log(err);
+    }
    
-
     console.log("orange")
-}
-
-test = function() {
-
-    var spawn = require("child_process").spawn;
-    var yolo = spawn('python', ["./compute_input.py", 'Ram', 'Sastry'] ); 
-
-    yolo.stdout.on('data', function(data) { 
-        console.log(data.toString()); 
-    } ) 
+    
 }
 
 
@@ -138,16 +123,14 @@ moveFile = function (file) {
 }
 
 
-analyze = function (folderPath) {
+analyzeFiles = function (folderPath) {
     return new Promise(function (resolve, reject) {
-
-        var spawn = require('child_process').spawn;
-        var pythonFilePath = __dirname.replace("/controllers", "/functions/SemRush_Excel.py")
+  
+        var pythonFilePath = __dirname.replace("/controllers", "/controllers/SemRush_Excel.py")
         console.log('pythonFilePath', pythonFilePath)
 
+        var spawn = require('child_process').spawn;
         var process = spawn('python', ["./SemRush_Excel.py", folderPath] );
-
-        console.log('yoyoyo')
 
         process.stdout.on('data', function(data){
             console.log(data.toString());
@@ -163,6 +146,27 @@ analyze = function (folderPath) {
             catch(err) {
                 reject(err);
             }
+        });
+
+    });
+}
+
+
+var yolo123 = function (name) {
+    return new Promise(function (resolve, reject) {
+
+        path123 = __dirname.replace("/controllers", "/controllers/compute_input.py")
+        console.log("path123", path123)
+
+        var spawn = require("child_process").spawn; 
+        var process = spawn('python', [path123, name[0], name[1]] ); 
+    
+        process.stdout.on('data', function(data) { 
+            console.log(data.toString()); 
+        })
+        
+        process.stdout.on('end', function(data){
+            resolve("success")
         });
 
     });
