@@ -4,10 +4,7 @@
   "description": "Hypatia Web Application",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "nopenv": "nopenv",
-    "nopy": "nopy",
-    "npip": "npip"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -45,6 +42,7 @@
     "nopy": "^0.2.7",
     "pandas-js": "git+https://github.com/StratoDem/pandas.js.git",
     "path": "^0.12.7",
+    "python-shell": "^2.0.3",
     "uuid": "^7.0.2"
   }
 }

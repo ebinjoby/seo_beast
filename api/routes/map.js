@@ -21,8 +21,9 @@ var upload = multer({ storage: storage });
 
 
 router
-.route('/analyze')
-.post(upload.array('file', 30), ctrlTool.respond)
+.route('/seo_tool/:folderName')
+.get(ctrlTool.downloadOutput)
+.post(upload.array('file', 30), ctrlTool.uploadInput)
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

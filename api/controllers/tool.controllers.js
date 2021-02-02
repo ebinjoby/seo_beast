@@ -2,50 +2,47 @@
 var fs = require('fs');
 var path = require('path');
 const uuid = require('uuid');
+const {PythonShell} =require('python-shell'); 
 
 
 
-module.exports.respondnew = async function (req, res) {
 
-    console.log("banana")
 
-    name = ['Kevin', 'Hart']
+module.exports.downloadOutput = function (req, res) {
+
+    var downPath = __dirname.replace("/api/controllers", "/uploads")
+    var fileName = "output.xlsx";
+    var file = path.join(downPath, req.params.folderName, fileName);
+
+    res.download(file, Date.now().toString().concat(" ").concat(fileName), async function (err) {
+
+        if (err) {
+            console.log(err);
+        } 
+        else {
+            try {
+                result = await deleteFolder(req.params.folderName);
+                console.log(result);
+                console.log("File download successful");
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+    })
+}
+
+
+
+module.exports.uploadInput = async function (req, res) {
 
     try {
-        item = await yolo(name);
-        console.log(item)
+        result = await deleteFolder(req.params.folderName);
+        console.log(result);
     }
-    catch(err) {
+    catch (err) {
         console.log(err);
     }
-   
-    console.log("orange")
-}
-
-var yolo = function (name) {
-    return new Promise(function (resolve, reject) {
-
-        path123 = __dirname.replace("/controllers", "/controllers/compute_input.py")
-        console.log("path123", path123)
-
-        var spawn = require("child_process").spawn; 
-        var process = spawn('python', [path123, name[0], name[1]] ); 
-    
-        process.stdout.on('data', function(data) { 
-            console.log(data.toString()); 
-        })
-        
-        process.stdout.on('end', function(data){
-            resolve("success")
-        });
-
-    });
-}
-
-
-
-module.exports.respond = async function (req, res) {
-
     try {
         console.log("files", req.files);
 
@@ -58,18 +55,56 @@ module.exports.respond = async function (req, res) {
         res.json(err);
     }
 
-    console.log("banana")
-
     try {
-        item = await yolo(folderPath);
-        console.log(item)
+        item = await analyzeFiles(folderPath);
+        console.log('Output Folder Name: ', item[0])
+        res
+            .status(200)
+            .json({'message' : 'Process Complete!', 'location' : item[0]});
     }
     catch(err) {
         console.log(err);
     }
-   
-    console.log("orange")
+
+    setTimeout(async function(folderName) { 
+
+        try {
+            result = await deleteFolder(folderName);
+            console.log(result);
+        }
+        catch (err) {
+            console.log(err);
+        }
     
+    }, 172800000, item[0]);
+   
+}
+
+
+
+
+
+deleteFolder = function(folderName) {
+    return new Promise(async function (resolve, reject) {
+
+        if (folderName != 'NONE') {
+
+            uploadsPath = __dirname.replace("/api/controllers", "/uploads")
+            folderPath = path.join(uploadsPath, folderName);
+
+            fs.rmdir(folderPath, { recursive: true }, (err) => {
+                if (err) {
+                    reject(err);
+                }
+                else {
+                    resolve(folderName + ' has been deleted!')
+                }     
+            });
+        }
+        else {
+            resolve('No folder to delete.')
+        } 
+    });
 }
 
 
@@ -112,6 +147,7 @@ moveFile = function (file) {
                     reject(err);
                 } 
                 else {
+                    fs.unlinkSync(file.path)
                     resolve();
                 }
             }); 
@@ -125,19 +161,26 @@ moveFile = function (file) {
 
 analyzeFiles = function (folderPath) {
     return new Promise(function (resolve, reject) {
-  
-        var pythonFilePath = __dirname.replace("/controllers", "/controllers/SemRush_Excel.py")
-        console.log('pythonFilePath', pythonFilePath)
 
-        var spawn = require('child_process').spawn;
-        var process = spawn('python', ["./SemRush_Excel.py", folderPath] );
+        var pythonFilePath = __dirname.replace("/controllers", "/functions")
 
-        process.stdout.on('data', function(data){
-            console.log(data.toString());
+        let options = { 
+            mode: 'text', 
+            pythonOptions: ['-u'], // get print results in real-time 
+            scriptPath: pythonFilePath, //If you are having python_test.py script in same folder, then it's optional. 
+            args: [folderPath] //An argument which can be accessed in the script using sys.argv[1] 
+        }; 
+    
+        let pyshell = new PythonShell('SemRush_Excel.py', options)
+    
+        pyshell.on('message', function (message) {
+            console.log(message);
         });
-
-        process.stdout.on('end', function(){
-
+          
+        // end the input stream and allow the process to exit
+        pyshell.end(function (err, code, signal) {
+            if (err) throw err;
+            
             try {
                 if (fs.existsSync(path.join(folderPath, 'Output.xlsx'))) {
                     resolve(folderPath.split("/").slice(-1));
@@ -150,27 +193,5 @@ analyzeFiles = function (folderPath) {
 
     });
 }
-
-
-var yolo123 = function (name) {
-    return new Promise(function (resolve, reject) {
-
-        path123 = __dirname.replace("/controllers", "/controllers/compute_input.py")
-        console.log("path123", path123)
-
-        var spawn = require("child_process").spawn; 
-        var process = spawn('python', [path123, name[0], name[1]] ); 
-    
-        process.stdout.on('data', function(data) { 
-            console.log(data.toString()); 
-        })
-        
-        process.stdout.on('end', function(data){
-            resolve("success")
-        });
-
-    });
-}
-
 
 

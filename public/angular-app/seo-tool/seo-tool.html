@@ -6,10 +6,10 @@
 
     <div ng-if="!vm.ShowSpinnerStatus" ng-model="vm.files">
       <input type="file" id="file123" name="file133" class="inputfile" ng-files="vm.getTheFiles($files)" ng-model="vm.files" multiple/>
-      <label ng-if="!vm.files[0]" for="file123" class="btn btn-primary">Choose File</label>
-      <button ng-if="vm.files[0]" class="btn btn-danger" ng-click="vm.removeFiles()">Remove File</button>
+      <label ng-if="!vm.files[0]" for="file123" class="btn btn-primary">Choose Files</label>
+      <button ng-if="vm.files[0]" class="btn btn-danger" ng-click="vm.removeFiles()">Remove Files</button>
       <span ng-if="vm.files[0]">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
-      <button ng-if="vm.files[0]" class="btn btn-success" ng-click="vm.uploadFiles()">Upload File</button>
+      <button ng-if="vm.files[0]" class="btn btn-success" ng-click="vm.uploadFiles()">Upload Files</button>
       <div ng-model="vm.files" ng-repeat="file in vm.files" style="margin:10px; color: orange;">{{file.name}}<br></div>
     </div>
 
@@ -23,6 +23,12 @@
       <div class="column3-3c">
         <h4 style="color: orange;">WAIT !</h4>
       </div>
+    </div>
+
+    <div ng-if="vm.location">
+      <br>
+      <h4>Download Ouput:</h4>
+      <button class="btn btn-success" ng-click="vm.downloadFile()">Download</button>
     </div>
 
   </div>

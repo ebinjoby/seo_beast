@@ -5,16 +5,16 @@ function hypatiaDataFactory($http) {
     return {
 
         keywordsListUpload: keywordsListUpload,
-        articlesListDownload: articlesListDownload
+        keywordsOutputDownload: keywordsOutputDownload
     };
 
     
-    function keywordsListUpload(formdata) {
-        return $http.post('api/analyze/', formdata, { headers: { 'Content-Type': undefined } }).then(complete).catch(failed);
+    function keywordsListUpload(formdata, id) {
+        return $http.post('api/seo_tool/' + id, formdata, { headers: { 'Content-Type': undefined } }).then(complete).catch(failed);
     }
 
-    function articlesListDownload(id) {
-        window.open('api/projects/' + id + '/articles/download/', '_parent');
+    function keywordsOutputDownload(id) {
+        window.open('api/seo_tool/' + id, '_parent');
     }
 
     
