@@ -4,9 +4,16 @@ var path = require('path');
 const uuid = require('uuid');
 const {PythonShell} =require('python-shell'); 
 
+var messages = [];
 
+module.exports.messages = function() {
+    return messages
+}
 
-
+module.exports.messagesReset = function() {
+    messages = [];
+}
+ 
 
 module.exports.downloadOutput = function (req, res) {
 
@@ -174,6 +181,11 @@ analyzeFiles = function (folderPath) {
         let pyshell = new PythonShell('SemRush_Excel.py', options)
     
         pyshell.on('message', function (message) {
+
+            if (message != '') {
+                messages.push(message); // ######
+            }
+            
             console.log(message);
         });
           

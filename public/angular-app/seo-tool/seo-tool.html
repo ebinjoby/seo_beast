@@ -1,7 +1,8 @@
-<div class="wrapper" ng-model="vm.projects">
+<div class="wrapper">
 
 
-  <div class="column2-2" ng-model="vm.projects">
+  <div class="column1-2">
+
     <h3>Select Keyword List CSVs for Processing:</h3><br>
 
     <div ng-if="!vm.ShowSpinnerStatus" ng-model="vm.files">
@@ -32,5 +33,20 @@
     </div>
 
   </div>
+
+  <div class="column2-2" >
+    <div class="reverser">
+
+      <div class="console" ng-model="vm.messages">
+      
+        <div ng-class="{'color-yellow': message.highlight === 'true'}" ng-model="vm.messages" ng-repeat="message in vm.messages | filter:orderBy([reverse])">
+          {{message.data}}
+          <br><br>
+        </div>
+
+      </div>
+      
+    </div>
+  </div> 
 
 </div>

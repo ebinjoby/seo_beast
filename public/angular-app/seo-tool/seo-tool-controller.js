@@ -1,7 +1,7 @@
 
 angular.module('hypatia').controller('SeoToolController', SeoToolController);
 
-function SeoToolController(hypatiaDataFactory, $window) {
+function SeoToolController(hypatiaDataFactory, socketFactory, $rootScope) {
 
     var vm = this;
 
@@ -11,6 +11,28 @@ function SeoToolController(hypatiaDataFactory, $window) {
     var formdata = new FormData();
 
     vm.files = [];
+    vm.messages = [];
+    
+
+    socketFactory.onmessage(function(event) {
+
+        message = event.data;
+        console.log('WS Server Message: ', message)
+
+        if (message.slice(0,10) == 'Connection') {
+            var data = {'data' : message, 'highlight': 'true'}
+        }
+        else if (message.slice(0,10) == 'Time Taken') {
+            var data = {'data' : message, 'highlight': 'true'}
+        }
+        else {
+            var data = {'data' : message, 'highlight': 'false'}
+        }
+
+        vm.messages.push(data);
+        $rootScope.$apply()
+    });
+
 
     vm.reset = function(variable) {
 
@@ -28,6 +50,7 @@ function SeoToolController(hypatiaDataFactory, $window) {
 
     vm.removeFiles = function () {
         vm.files = [];
+        console.log("vm.messages", vm.messages);
     }
 
     vm.uploadFiles = function () {

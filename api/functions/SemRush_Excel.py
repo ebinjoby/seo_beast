@@ -14,7 +14,6 @@ import warnings
 def read_input():
     
     path = sys.argv[1]
-    print('\n\n' + path + '\n\n')
     return path
 
 # Cleaning functions
@@ -101,7 +100,7 @@ def analyze(path, media_path):
     
     files = [file for file in listdir(path) if isfile(join(path, file))]
     files = list(filter(file_filter, files))
-    print('Input files are: ' + str(files) + '\n\n')
+    print('\n\nInput files are: ' + str(files) + '\n\n')
     
     
     files = list(map(convert, files))
@@ -241,7 +240,7 @@ def analyze(path, media_path):
     
     end = time.time()
     
-    print("Time Taken: " +  str(end-start) + '\n\n')
+    print("Time Taken: " +  str(round(end-start, 2)) + ' seconds\n\n')
     
     
     
