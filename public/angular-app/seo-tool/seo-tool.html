@@ -1,9 +1,14 @@
+
+<br><br>
+
 <div class="wrapper">
+
+  <br><br>
 
 
   <div class="column1-2">
 
-    <h3>Select Keyword List CSVs for Processing:</h3><br>
+    <h3 style="color: rgb(3, 29, 0);">Select Keyword List CSVs for Processing:</h3><br>
 
     <div ng-if="!vm.ShowSpinnerStatus" ng-model="vm.files">
       <input type="file" id="file123" name="file133" class="inputfile" ng-files="vm.getTheFiles($files)" ng-model="vm.files" multiple/>
@@ -11,24 +16,24 @@
       <button ng-if="vm.files[0]" class="btn btn-danger" ng-click="vm.removeFiles()">Remove Files</button>
       <span ng-if="vm.files[0]">&nbsp&nbsp&nbsp&nbsp&nbsp</span>
       <button ng-if="vm.files[0]" class="btn btn-success" ng-click="vm.uploadFiles()">Upload Files</button>
-      <div ng-model="vm.files" ng-repeat="file in vm.files" style="margin:10px; color: orange;">{{file.name}}<br></div>
+      <div ng-model="vm.files" ng-repeat="file in vm.files" style="margin:10px; color: rgb(3, 29, 0);">{{file.name}}<br></div>
     </div>
 
     <div ng-if="vm.ShowSpinnerStatus" class="wrapper">
       <div class="column1-3c">
-        <h4 style="color: orange;">PLEASE</h4>
+        <h4 style="color: red;">PLEASE</h4>
       </div>
       <div class="column2-3c">
         <div class="loader"></div>
       </div>
       <div class="column3-3c">
-        <h4 style="color: orange;">WAIT !</h4>
+        <h4 style="color: red;">WAIT !</h4>
       </div>
     </div>
 
     <div ng-if="vm.location">
       <br>
-      <h4>Download Ouput:</h4>
+      <h3 style="color: rgb(3, 29, 0);">Download Output:</h3>
       <button class="btn btn-success" ng-click="vm.downloadFile()">Download</button>
     </div>
 
@@ -39,7 +44,7 @@
 
       <div class="console" ng-model="vm.messages">
       
-        <div ng-class="{'color-yellow': message.highlight === 'true'}" ng-model="vm.messages" ng-repeat="message in vm.messages | filter:orderBy([reverse])">
+        <div ng-class="{'color-green': message.highlight === 'true'}" ng-model="vm.messages" ng-repeat="message in vm.messages | filter:orderBy([reverse])">
           {{message.data}}
           <br><br>
         </div>

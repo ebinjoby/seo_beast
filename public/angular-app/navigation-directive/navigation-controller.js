@@ -6,7 +6,6 @@ function NavigationController($location) {
 
     vm.isActiveTab = function(url) {
         var currentPath = $location.path().split('/')[1];
-        console.log(currentPath)
         return (url === currentPath ? 'active' : '');
     }
 

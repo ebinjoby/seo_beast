@@ -7,6 +7,8 @@
   body {
     /* Margin bottom by footer height */
     margin-bottom: 20px;
+    background-color: rgb(201, 216, 201);
+
   }
   .container {
     padding: 10px;
@@ -26,14 +28,12 @@
     width: 100%;
     /* Set the fixed height of the footer here */
     height: 90px;
-    background-color: #112531;
+    background-color: green;
     padding-top: 20px;
   }
   .photoContainer {
-    margin-top: 23vh; /* Half the height */
+    margin-top: 20vh; /* Half the height */
   }
-
-  
 
   .container123 {
     display: grid;
@@ -288,7 +288,7 @@
   .reverser {
     height: 50vh;
     background-color: black;
-    border: 5px solid #162530;
+    border: 5px solid green;
     padding-left:50px;
     padding-right:50px;
     padding-bottom:25px;
@@ -430,7 +430,7 @@ p_mtier:hover:before {content:"Home Run | Tier 1 | Tier 2 | Tier 3"; color:light
 
 .loader {
   border: 10px solid #f3f3f3; /* Light grey */
-  border-top: 10px solid #3498db; /* Blue */
+  border-top: 10px solid green; /* Blue */
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -444,11 +444,7 @@ p_mtier:hover:before {content:"Home Run | Tier 1 | Tier 2 | Tier 3"; color:light
 }
 
 
-.color-green1 {
-  color: lightgreen;
-}
-
-.color-green2 {
+.color-green {
   color: lightgreen;
 }
 
