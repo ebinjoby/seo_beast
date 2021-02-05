@@ -1,0 +1,42 @@
+<nav ng-controller="NavigationController as vm" class="navbar navbar-default navbar-fixed-top" ng-init="vm.init()" style="background-color: rgb(17, 37, 49);">
+        
+    <div class="container2" >
+          
+        <div class="navbar-header">
+
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            
+            <a class="navbar-brand" href="#/">SKYNET</a>
+
+        </div>
+
+        <div id="navbar" class="collapse navbar-collapse">
+
+            <ul class="nav navbar-nav">
+
+                <li ng-class="vm.isActiveTab('')">
+                    <a href="#/">Home</a>
+                </li>
+                
+                <li ng-class="vm.isActiveTab('seo_tool')">
+                    <a href="#/seo_tool">SEO Tool</a>
+                </li>
+
+            </ul>
+
+
+        </div>
+
+    </div>
+       
+</nav>
+
+ 
+
+
+
