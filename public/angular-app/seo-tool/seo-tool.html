@@ -8,7 +8,8 @@
 
   <div class="column1-2">
 
-    <h3 style="color: rgb(3, 29, 0);">Select Keyword List CSVs for Processing:</h3><br>
+    <h3 style="color: rgb(3, 29, 0);">SEO Excel Tool</h3><br>
+    <h4 style="color: rgb(3, 29, 0);">Select Keyword List CSVs for Processing:</h4><br>
 
     <div ng-if="!vm.ShowSpinnerStatus" ng-model="vm.files">
       <input type="file" id="file123" name="file133" class="inputfile" ng-files="vm.getTheFiles($files)" ng-model="vm.files" multiple/>
@@ -33,7 +34,7 @@
 
     <div ng-if="vm.location">
       <br>
-      <h3 style="color: rgb(3, 29, 0);">Download Output:</h3>
+      <h4 style="color: rgb(3, 29, 0);">Download Output:</h4>
       <button class="btn btn-success" ng-click="vm.downloadFile()">Download</button>
     </div>
 

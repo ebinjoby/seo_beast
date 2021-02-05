@@ -237,6 +237,8 @@ def analyze(path, media_path):
     writer.save()
 
     print('Excel file output (containing all sheets) has been created\n\n')
+
+    print('Output Location: ' + path.split('/')[-1] + '\n\n')
     
     end = time.time()
     

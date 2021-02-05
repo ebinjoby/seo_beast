@@ -59,10 +59,10 @@ router
 .post(upload.array('file', 30), ctrlTool.uploadInput)
 
 
-router.ws('/', function(ws, req) {
+router.ws('/seo_tool_WS', function(ws, req) {
     
     console.log('WS Client Connected');
-    ws.send('Connection to WS server established. Welcome new client!')
+    ws.send('Connection to SEO Tool web-socket server established. Welcome new client!')
 
     monitor(ctrlTool.messages(), function(data) {
 
@@ -81,7 +81,7 @@ router.ws('/', function(ws, req) {
         ctrlTool.messagesReset()
     });
 });
-
+ 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

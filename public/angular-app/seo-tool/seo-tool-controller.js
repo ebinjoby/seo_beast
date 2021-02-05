@@ -1,20 +1,30 @@
 
 angular.module('hypatia').controller('SeoToolController', SeoToolController);
 
-function SeoToolController(hypatiaDataFactory, socketFactory, $rootScope) {
+function SeoToolController(apiFactory, dataFactory, $rootScope, $route) {
 
     var vm = this;
 
     vm.ShowSpinnerStatus = false;
-    vm.location = null;
+
+    var location = dataFactory.getOutputLocation();
+
+    if (location) {
+        vm.location = location;
+    }
+    else {
+        vm.location = null;
+    }
 
     var formdata = new FormData();
 
     vm.files = [];
     vm.messages = [];
-    
 
-    socketFactory.onmessage(function(event) {
+
+    socket = dataFactory.getSocket('seo_tool_WS')
+
+    socket.onmessage(function(event) {
 
         message = event.data;
         console.log('WS Server Message: ', message)
@@ -66,13 +76,19 @@ function SeoToolController(hypatiaDataFactory, socketFactory, $rootScope) {
                 folderName = 'NONE'
             }
 
-            hypatiaDataFactory.keywordsListUpload(formdata, folderName).then(function (response) {
+            dataFactory.setOutputLocation(null);
+
+            apiFactory.keywordsListUpload(formdata, folderName).then(function (response) {
 
                 console.log(response.data);
                 alert(response.data.message);
 
+                dataFactory.setOutputLocation(response.data.location)
+                $route.reload()
+                vm.location = dataFactory.getOutputLocation()
+
                 vm.ShowSpinnerStatus = false;
-                vm.location = response.data.location
+                //vm.location = response.data.location
 
             });
 
@@ -84,8 +100,9 @@ function SeoToolController(hypatiaDataFactory, socketFactory, $rootScope) {
     vm.downloadFile = function() {
 
         folderName = vm.location;
+        console.log('Downloading From: ', folderName)
 
-        hypatiaDataFactory.keywordsOutputDownload(folderName);
+        apiFactory.keywordsOutputDownload(folderName);
 
         vm.location = null;
     }

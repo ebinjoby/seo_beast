@@ -1,6 +1,7 @@
-angular.module('hypatia').factory('hypatiaDataFactory', hypatiaDataFactory);
 
-function hypatiaDataFactory($http) {
+angular.module('hypatia').factory('apiFactory', apiFactory);
+
+function apiFactory($http) {
 
     return {
 

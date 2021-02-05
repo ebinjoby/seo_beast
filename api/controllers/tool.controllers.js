@@ -67,7 +67,7 @@ module.exports.uploadInput = async function (req, res) {
         console.log('Output Folder Name: ', item[0])
         res
             .status(200)
-            .json({'message' : 'Process Complete!', 'location' : item[0]});
+            .json({'message' : 'SEO Tool Process Complete!', 'location' : item[0]});
     }
     catch(err) {
         console.log(err);
