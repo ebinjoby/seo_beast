@@ -62,7 +62,7 @@ router
 router.ws('/seo_tool_WS', function(ws, req) {
     
     console.log('WS Client Connected');
-    ws.send('Connection to SEO Tool web-socket server established. Welcome new client!')
+    ws.send('Connection to SEO Tool web-socket server established. Welcome!')
 
     monitor(ctrlTool.messages(), function(data) {
 
@@ -74,6 +74,12 @@ router.ws('/seo_tool_WS', function(ws, req) {
     ws.on('message', function(msg) {
         console.log('Message from WS client: ', msg);
         ws.send('Message Recieved: ' + msg)
+
+        if (msg == '"Client Leaving Page"') {
+            console.log('WS Client Disconnected');
+            ws.send('Connection to SEO Tool web-socket server terminated. Goodbye!')
+            ws.close();
+        }
     });
 
     ws.on('close', function() {

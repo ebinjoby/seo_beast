@@ -1,5 +1,4 @@
 
-# Importing Libraries
 import pandas as pd
 import langdetect as ld
 import numpy as np
@@ -16,7 +15,7 @@ def read_input():
     path = sys.argv[1]
     return path
 
-# Cleaning functions
+
 def file_filter(file):
     
     if (file.split('.')[-1] == 'csv') | (file.split('.')[-1] == 'xlsx'):
@@ -45,7 +44,6 @@ def is_english(text):
         return False
 
 
-# Decomposition rules for the data
 def decompose(row):
 
     global counter
@@ -54,11 +52,11 @@ def decompose(row):
 
     with counter.get_lock():
         counter.value += 1
-        #print(counter.value)
         if round(counter.value*100/length)%10 == 0:
             if round(counter.value*100/length)/10 == tracker.value:
                 tracker.value += 1
                 print(str(round(counter.value*100/length)) + ' %')
+                sys.stdout.flush()
     
     return_list = list()
 
@@ -66,8 +64,6 @@ def decompose(row):
         
         temp = dict()
         temp['index'] = row[0]
-        #temp['Raw_data'] = row[1]
-        #temp['Pages'] = item
         temp['Position'] = idx + 1
         
         if (item != '') & (item != None):
@@ -91,20 +87,6 @@ def decompose(row):
     return(return_list)
 
 
-def decompose_multiple(input):
-    '''
-     applies decompose function on a list of rows
-    '''
-    result = list()
-    for row in input:
-
-        if row[0]%100 == 0:
-            print('*')
-
-        result.extend(decompose(row))
-    
-    return(result)
-
 def init(val1, val2, leng):
     
     global counter
@@ -120,6 +102,9 @@ def analyze(path, media_path):
     start = time.time()
     
     warnings.simplefilter("ignore")
+
+    ####################################################################################################################################
+    # PART 1 #
     
     files = [file for file in listdir(path) if isfile(join(path, file))]
     files = list(filter(file_filter, files))
@@ -140,7 +125,8 @@ def analyze(path, media_path):
     
     print('Sheet1 aggregated from input files with total number of rows = ' + str(len(sheet1.index)) + '\n\n')
 
-
+    ####################################################################################################################################
+    # PART 2 #
     
     # Converting OGdata pages column into a list for faster opereations
     OGdata = df.reset_index(drop=True)
@@ -155,10 +141,7 @@ def analyze(path, media_path):
     for i,j in zip(Index_list,Pages_list):
         Input_list.append([i,j])
 
-
-
-
-    ############################################ Multiproccessing START ############################################
+    ############################ Multi-Proccessing START ############################
 
     n_jobs = mp.cpu_count()
     print('Splitting the process among ' + str(n_jobs) + ' CPU threads. Processing:\n\n')
@@ -167,27 +150,18 @@ def analyze(path, media_path):
     tracker = mp.Value('i', 0)
     total = len(Input_list)
 
-    #pool_results = pool.map(decompose_multiple, np.array_split(Input_list, n_jobs))
-
     pool = mp.Pool(processes = n_jobs, initializer = init, initargs = (counter, tracker, total))
-    pool_results = pool.map(decompose, Input_list, chunksize = 1)
+    pool_results = pool.imap(decompose, Input_list, chunksize = 1)
     pool.close()
     pool.join()
     
     results = list()
     
-    for result in pool_results:
+    for result in list(pool_results):
         results.extend(result)
 
-    #results = pool_results
 
-    #print(results)
-    print(len(results))
-
-    ############################################# Multiproccessing END #############################################
-        
-
-
+    ############################# Multi-Proccessing END #############################
 
     result_df = pd.DataFrame(results)
     
@@ -199,7 +173,8 @@ def analyze(path, media_path):
 
     print('\n\nSheet2 decomposed from Sheet1 with total number of rows = ' + str(len(sheet2.index)) + '\n\n')
     
-
+    ####################################################################################################################################
+    # PART 3 #
 
     domain_count = data.groupby('Source').count()['Position']
     mean_position = data.groupby('Source').mean()['Position'].apply(lambda num: round(num, 2))
@@ -241,7 +216,8 @@ def analyze(path, media_path):
          + ', out of which ' + str(sum(pd.isnull(pivot['Domain Category']))) + '/' + str(len(pivot.index)) 
          + ' received domain categories' + '\n\n')
 
-
+    ####################################################################################################################################
+    # PART 4 #
 
     data = data.merge(pivot, how ='left')
     data['Domain'] = np.nan
@@ -260,7 +236,8 @@ def analyze(path, media_path):
 
     print('Sheet4 and Sheet5 have been created by merging Sheet2 and Sheet3\n\n')
     
-
+    ####################################################################################################################################
+    # PART 5 #
 
     writer = pd.ExcelWriter(path + '/output.xlsx', engine='xlsxwriter') #pylint: disable=abstract-class-instantiated
 
@@ -275,6 +252,9 @@ def analyze(path, media_path):
     print('Excel file output (containing all sheets) has been created\n\n')
 
     print('Output Location: ' + path.split('/')[-1] + '\n\n')
+
+    ####################################################################################################################################
+
     
     end = time.time()
     
@@ -285,7 +265,6 @@ def analyze(path, media_path):
 if __name__ == '__main__':
     
     path = read_input()
-    #path = '/Users/ejoby/Desktop/Copy Contents to Desktop/test_files'
     media_path = '/Users/ejoby/Desktop/proto/seo_beast/api/databases/SERP Media Domain Categories.csv'
     analyze(path, media_path)
     

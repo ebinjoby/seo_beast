@@ -45,7 +45,7 @@ def analyze(Input_list):
     pool.close()
     pool.join()
 
-    results = pool_results
+    results = list(pool_results)
     print('\n\nResults: ' + str(len(results)))
 
     end = time.time()

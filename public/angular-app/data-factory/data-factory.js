@@ -3,7 +3,10 @@ angular.module('hypatia').factory('dataFactory', dataFactory);
 
 function dataFactory($window) {
 
-    var outputLocation = null;
+    var outputLocation = {
+        'seo_tool' : null,
+        'text_clean' : null
+    };
 
     return {
         getSocket: getSocket,
@@ -53,12 +56,12 @@ function dataFactory($window) {
         return socket;
     }
 
-    function setOutputLocation(location) {
-        outputLocation = location;
+    function setOutputLocation(tool, location) {
+        outputLocation[tool] = location;
     }
 
-    function getOutputLocation() {
-        return outputLocation
+    function getOutputLocation(tool) {
+        return outputLocation[tool]
     }
     
 }
