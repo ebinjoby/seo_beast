@@ -44,17 +44,30 @@ def is_english(text):
     except:
         return False
 
-    
+
 # Decomposition rules for the data
 def decompose(row):
+
+    global counter
+    global tracker
+    global length
+
+    with counter.get_lock():
+        counter.value += 1
+        #print(counter.value)
+        if round(counter.value*100/length)%10 == 0:
+            if round(counter.value*100/length)/10 == tracker.value:
+                tracker.value += 1
+                print(str(round(counter.value*100/length)) + ' %')
     
     return_list = list()
+
     for idx, item in enumerate(row[1]):
         
         temp = dict()
         temp['index'] = row[0]
-        temp['Raw_data'] = row[1]
-        temp['Pages'] = item
+        #temp['Raw_data'] = row[1]
+        #temp['Pages'] = item
         temp['Position'] = idx + 1
         
         if (item != '') & (item != None):
@@ -74,15 +87,16 @@ def decompose(row):
                                                 .replace('www.', '')\
                                                 .split('/')[0]
                         return_list.append(temp)
+
     return(return_list)
 
 
-def decompose_multiple(x):
+def decompose_multiple(input):
     '''
      applies decompose function on a list of rows
     '''
     result = list()
-    for row in x:
+    for row in input:
 
         if row[0]%100 == 0:
             print('*')
@@ -90,6 +104,15 @@ def decompose_multiple(x):
         result.extend(decompose(row))
     
     return(result)
+
+def init(val1, val2, leng):
+    
+    global counter
+    global tracker
+    global length
+    counter = val1
+    tracker = val2
+    length = leng
 
 
 def analyze(path, media_path):
@@ -132,17 +155,22 @@ def analyze(path, media_path):
     for i,j in zip(Index_list,Pages_list):
         Input_list.append([i,j])
 
-    # Single processor code
-    # pool_results = decompose_multiple(lst)
 
 
-    # Multiproccessing part
+
+    ############################################ Multiproccessing START ############################################
 
     n_jobs = mp.cpu_count()
     print('Splitting the process among ' + str(n_jobs) + ' CPU threads. Processing:\n\n')
 
-    pool = mp.Pool(n_jobs)
-    pool_results = pool.map(decompose_multiple, np.array_split(Input_list,n_jobs) )
+    counter = mp.Value('i', 0)
+    tracker = mp.Value('i', 0)
+    total = len(Input_list)
+
+    #pool_results = pool.map(decompose_multiple, np.array_split(Input_list, n_jobs))
+
+    pool = mp.Pool(processes = n_jobs, initializer = init, initargs = (counter, tracker, total))
+    pool_results = pool.map(decompose, Input_list, chunksize = 1)
     pool.close()
     pool.join()
     
@@ -150,14 +178,22 @@ def analyze(path, media_path):
     
     for result in pool_results:
         results.extend(result)
+
+    #results = pool_results
+
+    #print(results)
+    print(len(results))
+
+    ############################################# Multiproccessing END #############################################
         
+
+
+
     result_df = pd.DataFrame(results)
     
-    # merging the results back to the orignal data on index
+    # data is the df with new data that was proccessed merged with the orignal data on index
     data = pd.merge(OGdata, result_df, on = 'index')
-    
-    # data is the df with new data that was proccessed
-    
+
     sheet2 = data[['Topic', 'Keyword', 'Seed', 'Database', 'Tags', 'Volume', 'Difficulty', 'CPC', 'Comp Density', 
                'Results', 'Features', 'Trend', 'Click Pot', 'Position', 'Source', 'Title', 'URL']]
 
@@ -249,6 +285,7 @@ def analyze(path, media_path):
 if __name__ == '__main__':
     
     path = read_input()
+    #path = '/Users/ejoby/Desktop/Copy Contents to Desktop/test_files'
     media_path = '/Users/ejoby/Desktop/proto/seo_beast/api/databases/SERP Media Domain Categories.csv'
     analyze(path, media_path)
     
